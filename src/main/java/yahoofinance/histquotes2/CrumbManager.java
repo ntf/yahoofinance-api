@@ -67,7 +67,7 @@ public class CrumbManager {
         InputStreamReader is = new InputStreamReader(connection.getInputStream());
         BufferedReader br = new BufferedReader(is);
         String line;
-        Pattern patternPostForm = Pattern.compile("action=\"/consent\"");
+        Pattern patternPostForm = Pattern.compile("(action=\"/consent\")");
         Pattern patternInput = Pattern.compile("(<input type=\"hidden\" name=\")(.*?)(\" value=\")(.*?)(\">)");
         Matcher matcher;
         Map<String,String> datas = new HashMap<String,String>();
@@ -82,8 +82,8 @@ public class CrumbManager {
         	if(postFind){
         		matcher = patternInput.matcher(line);
         		if(matcher.find()){
-        			String name = matcher.group(2);
-        			String value = matcher.group(4);
+        			String name = matcher.group(3);
+        			String value = matcher.group(5);
         			datas.put(name, value);		
         		}
         	}        	
