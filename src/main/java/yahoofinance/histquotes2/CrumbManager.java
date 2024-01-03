@@ -35,7 +35,7 @@ public class CrumbManager {
             return;
         }
 
-        URL request = new URL("https://fc.yahoo.com");
+       URL request = new URL(YahooFinance.HISTQUOTES2_SCRAPE_URL);
         RedirectableRequest redirectableRequest = new RedirectableRequest(request, 5);
         redirectableRequest.setConnectTimeout(YahooFinance.CONNECTION_TIMEOUT);
         redirectableRequest.setReadTimeout(YahooFinance.CONNECTION_TIMEOUT);
