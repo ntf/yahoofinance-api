@@ -83,7 +83,7 @@ public class CrumbManager {
         		matcher = patternInput.matcher(line);
         		if(matcher.find()){
         			String name = matcher.group(3);
-        			String value = matcher.group(5);        			
+        			String value = matcher.group(5);
         			datas.put(name, value);		
         		}
         	}        	
@@ -145,7 +145,7 @@ public class CrumbManager {
              }
         }
             
-        log.warn("Failed to set cookie from http request. Historical quote requests will most likely fail.");
+        log.debug("Failed to set cookie from http request. Historical quote requests will most likely fail.");
     }
 
     private static void setCrumb() throws IOException {
@@ -172,7 +172,7 @@ public class CrumbManager {
             crumb = crumbResult.trim();
             log.debug("Set crumb from http request: {}", crumb);
         } else {
-            log.warn("Failed to set crumb from http request. Historical quote requests will most likely fail.");
+            log.debug("Failed to set crumb from http request. Historical quote requests will most likely fail.");
         }
         
     }
