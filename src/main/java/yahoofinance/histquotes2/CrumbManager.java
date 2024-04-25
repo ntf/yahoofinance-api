@@ -53,7 +53,7 @@ public class CrumbManager {
             if("Set-Cookie".equalsIgnoreCase(headerKey)) {
                 for(String cookieField : connection.getHeaderFields().get(headerKey)) {                	
                     for(String cookieValue : cookieField.split(";")) {
-                        if(cookieValue.matches("B=.*")) {
+                        if(cookieValue.matches("A1S=.*")) {
                             cookie = cookieValue;
                             log.debug("Set cookie from http request: {}", cookie);
                             return;
