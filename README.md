@@ -1,3 +1,7 @@
+# This project will port the original Yahoo Finance api and migrate it to Kotlin. 
+Reason: The origina api is missing some introday quotes, and Kotlin is a much better Java with aggressive development. The project will borrow ideas from the Python finance API to support AI's high-speed requirements, especially in Spark.
+
+
 # Finance Quotes API for Yahoo Finance (Java)
 
 [![Java CI with Maven](https://github.com/sfuhrm/yahoofinance-api/actions/workflows/maven.yml/badge.svg)](https://github.com/sfuhrm/yahoofinance-api/actions/workflows/maven.yml)
