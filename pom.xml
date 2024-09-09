@@ -32,6 +32,7 @@
             <name>Stephan Fuhrmann</name>
             <email>s@sfuhrm.de</email>
         </developer>
+
     </developers>
     <issueManagement>
         <url>https://github.com/sstrickx/yahoofinance-api/issues</url>
