@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 import yahoofinance.mock.MockedServersTest;
+import yahoofinance.query2v8.CrumbManager;
 
 public class CrumbManagerTest extends MockedServersTest {
 

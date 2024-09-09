@@ -1,5 +1,5 @@
 
-package yahoofinance.histquotes;
+package yahoofinance.query2v8;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;

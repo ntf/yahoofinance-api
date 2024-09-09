@@ -22,8 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes2.QueryInterval;
 import yahoofinance.util.RedirectableRequest;
 
 /**
@@ -145,7 +143,7 @@ public class HistQuotesQuery2V8Request {
         params.put("period2", String.valueOf(this.to.getTimeInMillis() / 1000));
         params.put("interval", this.interval.getTag());
         params.put("events", "div|split");
-
+        params.put("crumb", CrumbManager.getCrumb());
         String url = YahooFinance.HISTQUOTES_QUERY2V8_BASE_URL + URLEncoder.encode(this.symbol , "UTF-8") + "?" + Utils.getURLParameters(params);
 
         // Get CSV from Yahoo

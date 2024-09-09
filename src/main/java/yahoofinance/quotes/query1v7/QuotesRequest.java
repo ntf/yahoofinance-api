@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
-import yahoofinance.histquotes2.CrumbManager;
+import yahoofinance.query2v8.CrumbManager;
 import yahoofinance.util.RedirectableRequest;
 
 import java.io.IOException;

@@ -2,8 +2,7 @@ package yahoofinance.histquotes2;
 
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
+import yahoofinance.query2v8.*;
 import yahoofinance.util.RedirectableRequest;
 
 import java.io.BufferedReader;

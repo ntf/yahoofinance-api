@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import yahoofinance.histquotes.HistQuotesRequest;
-import yahoofinance.histquotes.Interval;
+import yahoofinance.query2v8.HistoricalQuote;
+import yahoofinance.query2v8.Interval;
 import yahoofinance.quotes.fx.FxQuote;
 import yahoofinance.quotes.csv.FxQuotesRequest;
 import yahoofinance.quotes.csv.StockQuotesData;
@@ -51,6 +52,8 @@ public class YahooFinance {
     public static final String HISTQUOTES_BASE_URL = System.getProperty("yahoofinance.baseurl.histquotes", "https://ichart.yahoo.com/table.csv");
     public static final String HISTQUOTES2_ENABLED = System.getProperty("yahoofinance.histquotes2.enabled", "true");
     public static final String HISTQUOTES2_BASE_URL = System.getProperty("yahoofinance.baseurl.histquotes2", "https://query1.finance.yahoo.com/v7/finance/download/");
+
+   // public static final String HISTQUOTES2_BASE_URL = System.getProperty("yahoofinance.baseurl.histquotes2", "https://query1.finance.yahoo.com/v7/finance/download/");
     public static final String HISTQUOTES_QUERY2V8_BASE_URL = System.getProperty("yahoofinance.baseurl.histquotesquery2v8", "https://query2.finance.yahoo.com/v8/finance/chart/");
     public static final String HISTQUOTES2_SCRAPE_URL = System.getProperty("yahoofinance.scrapeurl.histquotes2", "https://finance.yahoo.com/quote/%5EGSPC/options");
     public static final String HISTQUOTES2_CRUMB_URL = System.getProperty("yahoofinance.crumburl.histquotes2", "https://query1.finance.yahoo.com/v1/test/getcrumb");
@@ -86,7 +89,7 @@ public class YahooFinance {
     /**
      * Same as the <code>get(String)</code> method, but with the option to include
      * historical stock quote data. Including historical data will cause the {@link Stock}
-     * object's member field {@link yahoofinance.histquotes.HistoricalQuote} to be filled in
+     * object's member field {@link HistoricalQuote} to be filled in
      * with the default past year term at monthly intervals.
      * Returns null if the data can't be retrieved from Yahoo Finance.
      *
@@ -203,7 +206,7 @@ public class YahooFinance {
     /**
      * Same as the <code>get(String[])</code> method, but with the option to include
      * historical stock quote data. Including historical data will cause the {@link Stock}
-     * objects their member field {@link yahoofinance.histquotes.HistoricalQuote} to be filled in
+     * objects their member field {@link HistoricalQuote} to be filled in
      * with the default past year term at monthly intervals.
      * <p>
      * The latest quotes will be retrieved in a single request to Yahoo Finance.

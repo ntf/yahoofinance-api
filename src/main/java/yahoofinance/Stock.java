@@ -9,13 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import yahoofinance.histquotes.HistQuotesRequest;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
-import yahoofinance.histquotes2.HistDividendsRequest;
-import yahoofinance.histquotes2.HistQuotes2Request;
-import yahoofinance.histquotes2.HistSplitsRequest;
-import yahoofinance.histquotes2.HistoricalDividend;
-import yahoofinance.histquotes2.HistoricalSplit;
+import yahoofinance.query2v8.*;
 import yahoofinance.quotes.query1v7.StockQuotesQuery1V7Request;
 import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
@@ -223,11 +217,11 @@ public class Stock {
      *
      * @return      a list of historical quotes from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see         #getHistory(yahoofinance.histquotes.Interval)
+     * @see         #getHistory(Interval)
      * @see         #getHistory(java.util.Calendar)
      * @see         #getHistory(java.util.Calendar, java.util.Calendar)
-     * @see         #getHistory(java.util.Calendar, yahoofinance.histquotes.Interval)
-     * @see         #getHistory(java.util.Calendar, java.util.Calendar, yahoofinance.histquotes.Interval)
+     * @see         #getHistory(java.util.Calendar, Interval)
+     * @see         #getHistory(java.util.Calendar, java.util.Calendar, Interval)
      */
     public List<HistoricalQuote> getHistory() throws IOException {
         if(this.history != null) {
@@ -322,13 +316,8 @@ public class Stock {
      * @see                 #getHistory()
      */
     public List<HistoricalQuote> getHistory(Calendar from, Calendar to, Interval interval) throws IOException {
-        if(YahooFinance.HISTQUOTES2_ENABLED.equalsIgnoreCase("true")) {
-            HistQuotes2Request hist = new HistQuotes2Request(this.symbol, from, to, interval);
-            this.setHistory(hist.getResult());
-        } else {
-            HistQuotesRequest hist = new HistQuotesRequest(this.symbol, from, to, interval);
-            this.setHistory(hist.getResult());
-        }
+        HistQuotesQuery2V8Request hist = new HistQuotesQuery2V8Request(this.symbol, from, to, IntervalMapper.get(interval));
+        this.setHistory(hist.getResult());
         return this.history;
     }
 

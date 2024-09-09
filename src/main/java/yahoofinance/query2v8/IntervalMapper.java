@@ -1,6 +1,4 @@
-package yahoofinance.histquotes2;
-
-import yahoofinance.histquotes.Interval;
+package yahoofinance.query2v8;
 
 /**
  *

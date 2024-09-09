@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
+import yahoofinance.query2v8.HistoricalQuote;
+import yahoofinance.query2v8.Interval;
 import yahoofinance.util.RedirectableRequest;
 
 /**

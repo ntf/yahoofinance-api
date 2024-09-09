@@ -1,19 +1,19 @@
 
-package yahoofinance.histquotes2;
+package yahoofinance.query2v8;
 
 /**
  *
  * @author Stijn Strickx
  */
-public enum QueryInterval {
+public enum Interval {
     
-    DAILY("1d"),
-    WEEKLY("5d"),
-    MONTHLY("1mo");
+    DAILY("d"),
+    WEEKLY("w"),
+    MONTHLY("m");
     
     private final String tag;
     
-    QueryInterval(String tag) {
+    Interval(String tag) {
         this.tag = tag;
     }
     

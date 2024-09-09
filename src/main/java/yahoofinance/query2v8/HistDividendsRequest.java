@@ -1,4 +1,4 @@
-package yahoofinance.histquotes2;
+package yahoofinance.query2v8;
 
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
