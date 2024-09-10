@@ -37,7 +37,7 @@ public class HistSplitsRequest {
 
     // Interval has no meaning here and is not used here
     // But it's better to leave it because Yahoo's standard query URL still contains it
-    public static final QueryInterval DEFAULT_INTERVAL = QueryInterval.DAILY;
+    public static final Interval DEFAULT_INTERVAL = Interval.DAILY;
 
     public HistSplitsRequest(String symbol) {
         this(symbol, DEFAULT_FROM, DEFAULT_TO);

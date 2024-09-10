@@ -316,7 +316,7 @@ public class Stock {
      * @see                 #getHistory()
      */
     public List<HistoricalQuote> getHistory(Calendar from, Calendar to, Interval interval) throws IOException {
-        HistQuotesQuery2V8Request hist = new HistQuotesQuery2V8Request(this.symbol, from, to, IntervalMapper.get(interval));
+        HistQuotesQuery2V8Request hist = new HistQuotesQuery2V8Request(this.symbol, from, to, interval);
         this.setHistory(hist.getResult());
         return this.history;
     }

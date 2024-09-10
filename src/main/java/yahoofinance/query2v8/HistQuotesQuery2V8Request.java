@@ -35,7 +35,7 @@ public class HistQuotesQuery2V8Request {
     private final String symbol;
     private final Calendar from;
     private final Calendar to;
-    private final QueryInterval interval;
+    private final Interval interval;
 
     public static final Calendar DEFAULT_FROM = Calendar.getInstance();
 
@@ -43,13 +43,13 @@ public class HistQuotesQuery2V8Request {
         DEFAULT_FROM.add(Calendar.YEAR, -1);
     }
     public static final Calendar DEFAULT_TO = Calendar.getInstance();
-    public static final QueryInterval DEFAULT_INTERVAL = QueryInterval.MONTHLY;
+    public static final Interval DEFAULT_INTERVAL = Interval.MONTHLY;
 
     public HistQuotesQuery2V8Request(String symbol) {
         this(symbol, DEFAULT_INTERVAL);
     }
 
-    public HistQuotesQuery2V8Request(String symbol, QueryInterval interval) {
+    public HistQuotesQuery2V8Request(String symbol, Interval interval) {
         this(symbol, DEFAULT_FROM, DEFAULT_TO, interval);
     }
 
@@ -58,7 +58,7 @@ public class HistQuotesQuery2V8Request {
         this(symbol, from, to, DEFAULT_INTERVAL);
     }
 
-    public HistQuotesQuery2V8Request(String symbol, Calendar from, Calendar to, QueryInterval interval) {
+    public HistQuotesQuery2V8Request(String symbol, Calendar from, Calendar to, Interval interval) {
         this.symbol = symbol;
         this.from = this.cleanHistCalendar(from);
         this.to = this.cleanHistCalendar(to);
@@ -69,7 +69,7 @@ public class HistQuotesQuery2V8Request {
         this(symbol, from, to, DEFAULT_INTERVAL);
     }
 
-    public HistQuotesQuery2V8Request(String symbol, Date from, Date to, QueryInterval interval) {
+    public HistQuotesQuery2V8Request(String symbol, Date from, Date to, Interval interval) {
         this(symbol, interval);
         this.from.setTime(from);
         this.to.setTime(to);
