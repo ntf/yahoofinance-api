@@ -367,13 +367,13 @@ public class Stock {
      * @throws java.io.IOException when there's a connection problem
      * @see #getDividendHistory()
      */
-    public List<HistoricalDividend> getDividendHistory(Calendar from, Calendar to) throws IOException {
+    private List<HistoricalDividend> getDividendHistory(Calendar from, Calendar to) throws IOException {
         HistDividendsRequest histDiv = new HistDividendsRequest(this.symbol, from, to);
         this.setDividendHistory(histDiv.getResult());
         return this.dividendHistory;
     }
 
-    public void setDividendHistory(List<HistoricalDividend> dividendHistory) {
+    private void setDividendHistory(List<HistoricalDividend> dividendHistory) {
         this.dividendHistory = dividendHistory;
     }
 
