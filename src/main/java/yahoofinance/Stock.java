@@ -1,21 +1,18 @@
 package yahoofinance;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Calendar;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import yahoofinance.histquotes.HistQuotesRequest;
 import yahoofinance.query2v8.*;
 import yahoofinance.quotes.query1v7.StockQuotesQuery1V7Request;
 import yahoofinance.quotes.stock.StockDividend;
 import yahoofinance.quotes.stock.StockQuote;
-import yahoofinance.quotes.csv.StockQuotesData;
-import yahoofinance.quotes.csv.StockQuotesRequest;
 import yahoofinance.quotes.stock.StockStats;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * @author Stijn Strickx
@@ -371,13 +368,8 @@ public class Stock {
      * @see #getDividendHistory()
      */
     public List<HistoricalDividend> getDividendHistory(Calendar from, Calendar to) throws IOException {
-        if (YahooFinance.HISTQUOTES2_ENABLED.equalsIgnoreCase("true")) {
-            HistDividendsRequest histDiv = new HistDividendsRequest(this.symbol, from, to);
-            this.setDividendHistory(histDiv.getResult());
-        } else {
-            // Historical dividends cannot be retrieved without CRUMB
-            this.setDividendHistory(null);
-        }
+        HistDividendsRequest histDiv = new HistDividendsRequest(this.symbol, from, to);
+        this.setDividendHistory(histDiv.getResult());
         return this.dividendHistory;
     }
 
@@ -444,13 +436,8 @@ public class Stock {
      * @see #getSplitHistory()
      */
     public List<HistoricalSplit> getSplitHistory(Calendar from, Calendar to) throws IOException {
-        if (YahooFinance.HISTQUOTES2_ENABLED.equalsIgnoreCase("true")) {
-            HistSplitsRequest histSplit = new HistSplitsRequest(this.symbol, from, to);
-            this.setSplitHistory(histSplit.getResult());
-        } else {
-            // Historical splits cannot be retrieved without CRUMB
-            this.setSplitHistory(null);
-        }
+        HistSplitsRequest histSplit = new HistSplitsRequest(this.symbol, from, to);
+        this.setSplitHistory(histSplit.getResult());
         return this.splitHistory;
     }
 
