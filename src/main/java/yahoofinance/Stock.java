@@ -18,7 +18,6 @@ import yahoofinance.quotes.csv.StockQuotesRequest;
 import yahoofinance.quotes.stock.StockStats;
 
 /**
- *
  * @author Stijn Strickx
  */
 public class Stock {
@@ -43,36 +42,24 @@ public class Stock {
     }
 
     private void update() throws IOException {
-        if(YahooFinance.QUOTES_QUERY1V7_ENABLED.equalsIgnoreCase("true")) {
-            StockQuotesQuery1V7Request request = new StockQuotesQuery1V7Request(this.symbol);
-            Stock stock = request.getSingleResult();
-            if (stock != null) {
-                this.setName(stock.getName());
-                this.setCurrency(stock.getCurrency());
-                this.setStockExchange(stock.getStockExchange());
-                this.setQuote(stock.getQuote());
-                this.setStats(stock.getStats());
-                this.setDividend(stock.getDividend());
-                log.info("Updated Stock with symbol: {}", this.symbol);
-            } else {
-                log.error("Failed to update Stock with symbol: {}", this.symbol);
-            }
+        StockQuotesQuery1V7Request request = new StockQuotesQuery1V7Request(this.symbol);
+        Stock stock = request.getSingleResult();
+        if (stock != null) {
+            this.setName(stock.getName());
+            this.setCurrency(stock.getCurrency());
+            this.setStockExchange(stock.getStockExchange());
+            this.setQuote(stock.getQuote());
+            this.setStats(stock.getStats());
+            this.setDividend(stock.getDividend());
+            log.info("Updated Stock with symbol: {}", this.symbol);
         } else {
-            StockQuotesRequest request = new StockQuotesRequest(this.symbol);
-            StockQuotesData data = request.getSingleResult();
-            if (data != null) {
-                this.setQuote(data.getQuote());
-                this.setStats(data.getStats());
-                this.setDividend(data.getDividend());
-                log.info("Updated Stock with symbol: {}", this.symbol);
-            } else {
-                log.error("Failed to update Stock with symbol: {}", this.symbol);
-            }
+            log.error("Failed to update Stock with symbol: {}", this.symbol);
         }
     }
 
     /**
      * Checks if the returned name is null. This probably means that the symbol was not recognized by Yahoo Finance.
+     *
      * @return whether this stock's symbol is known by Yahoo Finance (true) or not (false)
      */
     public boolean isValid() {
@@ -82,8 +69,8 @@ public class Stock {
     /**
      * Returns the basic quotes data available for this stock.
      *
-     * @return      basic quotes data available for this stock
-     * @see         #getQuote(boolean)
+     * @return basic quotes data available for this stock
+     * @see #getQuote(boolean)
      */
     public StockQuote getQuote() {
         return this.quote;
@@ -103,12 +90,12 @@ public class Stock {
      * the statistics and dividend data of the stock from Yahoo Finance
      * in the same request.
      *
-     * @param refresh   indicates whether the data should be requested again to Yahoo Finance
-     * @return          basic quotes data available for this stock
+     * @param refresh indicates whether the data should be requested again to Yahoo Finance
+     * @return basic quotes data available for this stock
      * @throws java.io.IOException when there's a connection problem
      */
     public StockQuote getQuote(boolean refresh) throws IOException {
-        if(refresh) {
+        if (refresh) {
             this.update();
         }
         return this.quote;
@@ -121,8 +108,8 @@ public class Stock {
     /**
      * Returns the statistics available for this stock.
      *
-     * @return      statistics available for this stock
-     * @see         #getStats(boolean)
+     * @return statistics available for this stock
+     * @see #getStats(boolean)
      */
     public StockStats getStats() {
         return this.stats;
@@ -142,12 +129,12 @@ public class Stock {
      * the quote and dividend data of the stock from Yahoo Finance
      * in the same request.
      *
-     * @param refresh   indicates whether the data should be requested again to Yahoo Finance
-     * @return          statistics available for this stock
+     * @param refresh indicates whether the data should be requested again to Yahoo Finance
+     * @return statistics available for this stock
      * @throws java.io.IOException when there's a connection problem
      */
     public StockStats getStats(boolean refresh) throws IOException {
-        if(refresh) {
+        if (refresh) {
             this.update();
         }
         return this.stats;
@@ -160,8 +147,8 @@ public class Stock {
     /**
      * Returns the dividend data available for this stock.
      *
-     * @return      dividend data available for this stock
-     * @see         #getDividend(boolean)
+     * @return dividend data available for this stock
+     * @see #getDividend(boolean)
      */
     public StockDividend getDividend() {
         return this.dividend;
@@ -182,12 +169,12 @@ public class Stock {
      * the quote and statistics data of the stock from Yahoo Finance
      * in the same request.
      *
-     * @param refresh   indicates whether the data should be requested again to Yahoo Finance
-     * @return          dividend data available for this stock
+     * @param refresh indicates whether the data should be requested again to Yahoo Finance
+     * @return dividend data available for this stock
      * @throws java.io.IOException when there's a connection problem
      */
     public StockDividend getDividend(boolean refresh) throws IOException {
-        if(refresh) {
+        if (refresh) {
             this.update();
         }
         return this.dividend;
@@ -215,16 +202,16 @@ public class Stock {
      * Calling one of those methods will result in a new request
      * being sent to Yahoo Finance.
      *
-     * @return      a list of historical quotes from this stock
+     * @return a list of historical quotes from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see         #getHistory(Interval)
-     * @see         #getHistory(java.util.Calendar)
-     * @see         #getHistory(java.util.Calendar, java.util.Calendar)
-     * @see         #getHistory(java.util.Calendar, Interval)
-     * @see         #getHistory(java.util.Calendar, java.util.Calendar, Interval)
+     * @see #getHistory(Interval)
+     * @see #getHistory(java.util.Calendar)
+     * @see #getHistory(java.util.Calendar, java.util.Calendar)
+     * @see #getHistory(java.util.Calendar, Interval)
+     * @see #getHistory(java.util.Calendar, java.util.Calendar, Interval)
      */
     public List<HistoricalQuote> getHistory() throws IOException {
-        if(this.history != null) {
+        if (this.history != null) {
             return this.history;
         }
         return this.getHistory(HistQuotesRequest.DEFAULT_FROM);
@@ -238,10 +225,10 @@ public class Stock {
      * <li> interval: specified value
      * </ul>
      *
-     * @param interval      the interval of the historical data
-     * @return              a list of historical quotes from this stock
+     * @param interval the interval of the historical data
+     * @return a list of historical quotes from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getHistory()
+     * @see #getHistory()
      */
     public List<HistoricalQuote> getHistory(Interval interval) throws IOException {
         return this.getHistory(HistQuotesRequest.DEFAULT_FROM, interval);
@@ -255,10 +242,10 @@ public class Stock {
      * <li> interval: MONTHLY (default)
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @return              a list of historical quotes from this stock
+     * @param from start date of the historical data
+     * @return a list of historical quotes from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getHistory()
+     * @see #getHistory()
      */
     public List<HistoricalQuote> getHistory(Calendar from) throws IOException {
         return this.getHistory(from, HistQuotesRequest.DEFAULT_TO);
@@ -272,11 +259,11 @@ public class Stock {
      * <li> interval: specified value
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @param interval      the interval of the historical data
-     * @return              a list of historical quotes from this stock
+     * @param from     start date of the historical data
+     * @param interval the interval of the historical data
+     * @return a list of historical quotes from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getHistory()
+     * @see #getHistory()
      */
     public List<HistoricalQuote> getHistory(Calendar from, Interval interval) throws IOException {
         return this.getHistory(from, HistQuotesRequest.DEFAULT_TO, interval);
@@ -290,11 +277,11 @@ public class Stock {
      * <li> interval: MONTHLY (default)
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @param to            end date of the historical data
-     * @return              a list of historical quotes from this stock
+     * @param from start date of the historical data
+     * @param to   end date of the historical data
+     * @return a list of historical quotes from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getHistory()
+     * @see #getHistory()
      */
     public List<HistoricalQuote> getHistory(Calendar from, Calendar to) throws IOException {
         return this.getHistory(from, to, Interval.MONTHLY);
@@ -308,12 +295,12 @@ public class Stock {
      * <li> interval: specified value
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @param to            end date of the historical data
-     * @param interval      the interval of the historical data
-     * @return              a list of historical quotes from this stock
+     * @param from     start date of the historical data
+     * @param to       end date of the historical data
+     * @param interval the interval of the historical data
+     * @return a list of historical quotes from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getHistory()
+     * @see #getHistory()
      */
     public List<HistoricalQuote> getHistory(Calendar from, Calendar to, Interval interval) throws IOException {
         HistQuotesQuery2V8Request hist = new HistQuotesQuery2V8Request(this.symbol, from, to, interval);
@@ -342,13 +329,13 @@ public class Stock {
      * Calling one of those methods will result in a new request
      * being sent to Yahoo Finance.
      *
-     * @return      a list of historical dividends from this stock
+     * @return a list of historical dividends from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see         #getDividendHistory(java.util.Calendar)
-     * @see         #getDividendHistory(java.util.Calendar, java.util.Calendar)
+     * @see #getDividendHistory(java.util.Calendar)
+     * @see #getDividendHistory(java.util.Calendar, java.util.Calendar)
      */
     public List<HistoricalDividend> getDividendHistory() throws IOException {
-        if(this.dividendHistory != null) {
+        if (this.dividendHistory != null) {
             return this.dividendHistory;
         }
         return this.getDividendHistory(HistDividendsRequest.DEFAULT_FROM);
@@ -361,10 +348,10 @@ public class Stock {
      * <li> to: today (default)
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @return              a list of historical dividends from this stock
+     * @param from start date of the historical data
+     * @return a list of historical dividends from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getDividendHistory()
+     * @see #getDividendHistory()
      */
     public List<HistoricalDividend> getDividendHistory(Calendar from) throws IOException {
         return this.getDividendHistory(from, HistDividendsRequest.DEFAULT_TO);
@@ -377,19 +364,19 @@ public class Stock {
      * <li> to: specified value
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @param to            end date of the historical data
-     * @return              a list of historical dividends from this stock
+     * @param from start date of the historical data
+     * @param to   end date of the historical data
+     * @return a list of historical dividends from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getDividendHistory()
+     * @see #getDividendHistory()
      */
     public List<HistoricalDividend> getDividendHistory(Calendar from, Calendar to) throws IOException {
-        if(YahooFinance.HISTQUOTES2_ENABLED.equalsIgnoreCase("true")) {
+        if (YahooFinance.HISTQUOTES2_ENABLED.equalsIgnoreCase("true")) {
             HistDividendsRequest histDiv = new HistDividendsRequest(this.symbol, from, to);
             this.setDividendHistory(histDiv.getResult());
         } else {
-        	// Historical dividends cannot be retrieved without CRUMB
-        	this.setDividendHistory(null);
+            // Historical dividends cannot be retrieved without CRUMB
+            this.setDividendHistory(null);
         }
         return this.dividendHistory;
     }
@@ -415,13 +402,13 @@ public class Stock {
      * Calling one of those methods will result in a new request
      * being sent to Yahoo Finance.
      *
-     * @return      a list of historical splits from this stock
+     * @return a list of historical splits from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see         #getSplitHistory(java.util.Calendar)
-     * @see         #getSplitHistory(java.util.Calendar, java.util.Calendar)
+     * @see #getSplitHistory(java.util.Calendar)
+     * @see #getSplitHistory(java.util.Calendar, java.util.Calendar)
      */
     public List<HistoricalSplit> getSplitHistory() throws IOException {
-        if(this.splitHistory != null) {
+        if (this.splitHistory != null) {
             return this.splitHistory;
         }
         return this.getSplitHistory(HistSplitsRequest.DEFAULT_FROM);
@@ -434,10 +421,10 @@ public class Stock {
      * <li> to: today (default)
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @return              a list of historical splits from this stock
+     * @param from start date of the historical data
+     * @return a list of historical splits from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getSplitHistory()
+     * @see #getSplitHistory()
      */
     public List<HistoricalSplit> getSplitHistory(Calendar from) throws IOException {
         return this.getSplitHistory(from, HistSplitsRequest.DEFAULT_TO);
@@ -450,19 +437,19 @@ public class Stock {
      * <li> to: specified value
      * </ul>
      *
-     * @param from          start date of the historical data
-     * @param to            end date of the historical data
-     * @return              a list of historical splits from this stock
+     * @param from start date of the historical data
+     * @param to   end date of the historical data
+     * @return a list of historical splits from this stock
      * @throws java.io.IOException when there's a connection problem
-     * @see                 #getSplitHistory()
+     * @see #getSplitHistory()
      */
     public List<HistoricalSplit> getSplitHistory(Calendar from, Calendar to) throws IOException {
-        if(YahooFinance.HISTQUOTES2_ENABLED.equalsIgnoreCase("true")) {
+        if (YahooFinance.HISTQUOTES2_ENABLED.equalsIgnoreCase("true")) {
             HistSplitsRequest histSplit = new HistSplitsRequest(this.symbol, from, to);
             this.setSplitHistory(histSplit.getResult());
         } else {
-        	// Historical splits cannot be retrieved without CRUMB
-        	this.setSplitHistory(null);
+            // Historical splits cannot be retrieved without CRUMB
+            this.setSplitHistory(null);
         }
         return this.splitHistory;
     }
