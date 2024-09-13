@@ -100,14 +100,14 @@ public class HistQuotesQuery2V8Request {
         JsonNode opens = quotes.get("open");
         JsonNode highs = quotes.get("high");
         JsonNode lows = quotes.get("low");
-        JsonNode adjCloses = indicators.get("adjclose").get(0).get("adjclose");
+        //JsonNode adjCloses = indicators.get("adjclose").get(0).get("adjclose");
 
         List<HistoricalQuote> result = new ArrayList<>();
         for (int i = 0; i < timestamps.size(); i++) {
             long timestamp = timestamps.get(i).asLong();
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(timestamp * 1000);
-            BigDecimal adjClose = adjCloses.get(i).decimalValue();
+            //BigDecimal adjClose = adjCloses.get(i).decimalValue();
             long volume = volumes.get(i).asLong();
             BigDecimal open = opens.get(i).decimalValue();
             BigDecimal high = highs.get(i).decimalValue();
@@ -121,7 +121,7 @@ public class HistQuotesQuery2V8Request {
                 low,
                 high,
                 close,
-                adjClose,
+                null,
                 volume);
             result.add(quote);
         }
