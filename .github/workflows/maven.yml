@@ -3,20 +3,23 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ master, test ]
+    branches: [ master ]
   pull_request:
-    branches: [ master, test ]
+    branches: [ master ]
 
 jobs:
-  maven_version:
-    uses: sfuhrm/github_workflows/.github/workflows/maven-expression.yml@main
-    with:
-      java_version: 17
-      expression: project.version
-  call-workflow-passing-data:
-    needs: maven_version
-    uses: sfuhrm/github_workflows/.github/workflows/maven.yml@main
-    with:
-      java_version: "[\"8\", \"11\", \"17\", \"19\" ]"
-      artifact_name: build
-      artifact_path: snmpman/target/snmpman-${{ needs.maven_version.outputs.expression_value }}.jar
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
