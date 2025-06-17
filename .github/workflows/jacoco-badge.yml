@@ -1,0 +1,19 @@
+name: Jacoco Coverage
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  call-jacoco-badge:
+    uses: sfuhrm/github_workflows/.github/workflows/jacoco-badge.yml@main
+    with:
+      java_version: 11
+      artifact_name: coverage
+      artifact_path: ./target/site/jacoco/jacoco.csv
+      jacoco_csv_path: ./target/site/jacoco/jacoco.csv
+      committer_email: sfuhrm@users.noreply.github.com
+      committer_user: sfuhrm
+      

@@ -1,4 +1,4 @@
-package yahoofinance.histquotes2;
+package yahoofinance.query2v8;
 
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author Stijn Strickx (modified by Randle McMurphy)
  */
-public class HistSplitsRequest {
+public class HistDividendsRequest {
 
 
-    private static final Logger log = LoggerFactory.getLogger(HistSplitsRequest.class);
+    private static final Logger log = LoggerFactory.getLogger(HistDividendsRequest.class);
     private final String symbol;
 
     private final Calendar from;
@@ -37,19 +37,19 @@ public class HistSplitsRequest {
 
     // Interval has no meaning here and is not used here
     // But it's better to leave it because Yahoo's standard query URL still contains it
-    public static final QueryInterval DEFAULT_INTERVAL = QueryInterval.DAILY;
+    public static final Interval DEFAULT_INTERVAL = Interval.DAILY;
 
-    public HistSplitsRequest(String symbol) {
+    public HistDividendsRequest(String symbol) {
         this(symbol, DEFAULT_FROM, DEFAULT_TO);
     }
 
-    public HistSplitsRequest(String symbol, Calendar from, Calendar to) {
+    public HistDividendsRequest(String symbol, Calendar from, Calendar to) {
         this.symbol = symbol;
         this.from = this.cleanHistCalendar(from);
         this.to = this.cleanHistCalendar(to);
     }
 
-    public HistSplitsRequest(String symbol, Date from, Date to) {
+    public HistDividendsRequest(String symbol, Date from, Date to) {
         this(symbol);
         this.from.setTime(from);
         this.to.setTime(to);
@@ -69,27 +69,27 @@ public class HistSplitsRequest {
         return cal;
     }
 
-    public List<HistoricalSplit> getResult() throws IOException {
+    public List<HistoricalDividend> getResult() throws IOException {
 
-        List<HistoricalSplit> result = new ArrayList<HistoricalSplit>();
-        
+        List<HistoricalDividend> result = new ArrayList<>();
+
         if(this.from.after(this.to)) {
-            log.warn("Unable to retrieve historical splits. "
+            log.warn("Unable to retrieve historical dividends. "
                     + "From-date should not be after to-date. From: "
                     + this.from.getTime() + ", to: " + this.to.getTime());
             return result;
         }
 
-        Map<String, String> params = new LinkedHashMap<String, String>();
+        Map<String, String> params = new LinkedHashMap<>();
         params.put("period1", String.valueOf(this.from.getTimeInMillis() / 1000));
         params.put("period2", String.valueOf(this.to.getTimeInMillis() / 1000));
 
         // Interval has no meaning here and is not used here
         // But it's better to leave it because Yahoo's standard query URL still contains it
         params.put("interval", DEFAULT_INTERVAL.getTag());
-        
-        // This will instruct Yahoo to return splits
-        params.put("events", "split");
+
+        // This will instruct Yahoo to return dividends
+        params.put("events", "div");
 
         params.put("crumb", CrumbManager.getCrumb());
 
@@ -102,30 +102,29 @@ public class HistSplitsRequest {
         RedirectableRequest redirectableRequest = new RedirectableRequest(request, 5);
         redirectableRequest.setConnectTimeout(YahooFinance.CONNECTION_TIMEOUT);
         redirectableRequest.setReadTimeout(YahooFinance.CONNECTION_TIMEOUT);
-        Map<String, String> requestProperties = new HashMap<String, String>();
+        Map<String, String> requestProperties = new HashMap<>();
         requestProperties.put("Cookie", CrumbManager.getCookie());
         URLConnection connection = redirectableRequest.openConnection(requestProperties);
 
-        InputStreamReader is = new InputStreamReader(connection.getInputStream());
-        BufferedReader br = new BufferedReader(is);
-        br.readLine(); // skip the first line
-        // Parse CSV
-        for (String line = br.readLine(); line != null; line = br.readLine()) {
+        try (   InputStreamReader is = new InputStreamReader(connection.getInputStream());
+                BufferedReader br = new BufferedReader(is)) {
+            br.readLine(); // skip the first line
+            // Parse CSV
+            for (String line = br.readLine(); line != null; line = br.readLine()) {
 
-            log.info("Parsing CSV line: " + Utils.unescape(line));
-            HistoricalSplit split = this.parseCSVLine(line);
-            result.add(split);
+                log.info("Parsing CSV line: " + Utils.unescape(line));
+                HistoricalDividend dividend = this.parseCSVLine(line);
+                result.add(dividend);
+            }
         }
         return result;
     }
 
-    private HistoricalSplit parseCSVLine(String line) {
+    private HistoricalDividend parseCSVLine(String line) {
         String[] data = line.split(YahooFinance.QUOTES_CSV_DELIMITER);
-    	String[] parts = data[1].split("/");
-        return new HistoricalSplit(this.symbol,
+        return new HistoricalDividend(this.symbol,
                 Utils.parseHistDate(data[0]),
-                Utils.getBigDecimal(parts[0]),
-                Utils.getBigDecimal(parts[1])
+                Utils.getBigDecimal(data[1])
         );
     }
 

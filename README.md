@@ -1,8 +1,43 @@
+# This project will port the original Yahoo Finance api and migrate it to Kotlin. 
+Reason: The origina api is missing some introday quotes, and Kotlin is a much better Java with aggressive development. The project will borrow ideas from the Python finance API to support AI's high-speed requirements, especially in Spark.
+
+# Why not Python? Speed. while Python can be improved in many ways, Spark obviously wins in performance when dealing with big data load.
+
+
+
+
+
+
+
 # Finance Quotes API for Yahoo Finance (Java)
 
-[![Build Status](https://travis-ci.org/sstrickx/yahoofinance-api.svg?branch=master)](https://travis-ci.org/sstrickx/yahoofinance-api)
+[![Java CI with Maven](https://github.com/sfuhrm/yahoofinance-api/actions/workflows/maven.yml/badge.svg)](https://github.com/sfuhrm/yahoofinance-api/actions/workflows/maven.yml)
+[![Coverage](https://raw.githubusercontent.com/sfuhrm/yahoofinance-api/master/.github/badges/jacoco.svg)](https://github.com/sfuhrm/yahoofinance-api/actions)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/YahooFinanceAPI/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.sfuhrm/YahooFinanceAPI)
+[![javadoc](https://javadoc.io/badge2/de.sfuhrm/YahooFinanceAPI/javadoc.svg)](https://javadoc.io/doc/de.sfuhrm/YahooFinanceAPI)
+[![ReleaseDate](https://img.shields.io/github/release-date/sfuhrm/yahoofinance-api)](https://github.com/sfuhrm/yahoofinance-api/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[Website](http://financequotes-api.com)
+
+### About this fork
+
+This is a fork of sstrickx' yahoofinanceapi which can be found [here](https://github.com/sstrickx/yahoofinance-api).
+
+The original repository seems to be no longer maintained. The intention of this fork is to provide a release with
+bugfixes, not new features.
+
+The changes in this fork are:
+
+* Proper closing of input/output streams, thereby working properly with HTTPS sockets.
+* Several fixes of deprecation warnings.
+* Raise minimum Java required to JDK 8.
+* Adding/changing of some badges in the project README.md.
+* Change Maven group id to 'de.sfuhrm'.
+* Add Github actions for continuous integration.
+
+Besides these changes, the software can be used as a drop-in replacement for sstrickx' Maven artifacts.
+
+### About the library
 
 This library provides some methods that should make it easy to communicate with the Yahoo Finance API. It allows you to request detailed information, some statistics and historical quotes on stocks. Separate functionality is available to request a simple FX quote.
 Please check the javadoc (available in dist directory) to get a complete overview of the available methods and to get an idea of which data is available from Yahoo Finance.
@@ -13,7 +48,7 @@ Please check the javadoc (available in dist directory) to get a complete overvie
 ### Maven
 ```xml
 <dependency>
-    <groupId>com.yahoofinance-api</groupId>
+    <groupId>de.sfuhrm</groupId>
     <artifactId>YahooFinanceAPI</artifactId>
     <version>x.y.z</version>
 </dependency>
@@ -21,12 +56,12 @@ Please check the javadoc (available in dist directory) to get a complete overvie
 ### Gradle
 ```groovy
 dependencies {
-    compile group: 'com.yahoofinance-api', name: 'YahooFinanceAPI', version: 'x.y.z'
+    compile group: 'de.sfuhrm', name: 'YahooFinanceAPI', version: 'x.y.z'
 }
 ```
 ### Ivy
 ```xml
-<dependency org="com.yahoofinance-api" name="YahooFinanceAPI" rev="x.y.z" />
+<dependency org="de.sfuhrm" name="YahooFinanceAPI" rev="x.y.z" />
 ```
 
 # Examples

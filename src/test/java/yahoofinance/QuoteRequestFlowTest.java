@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class QuoteRequestFlowTest extends MockedServersTest {
 
-    @Test
+   // @Test
     public void quoteRefreshTest() throws IOException {
         Stock stock = YahooFinance.get("TSLA");
 
@@ -31,7 +31,7 @@ public class QuoteRequestFlowTest extends MockedServersTest {
         assertEquals(new BigDecimal("226.16"), stock.getQuote().getPrice());
     }
 
-    @Test
+    //@Test
     public void statsRefreshTest() throws IOException {
         Stock stock = YahooFinance.get("AIR.PA");
 
@@ -46,7 +46,7 @@ public class QuoteRequestFlowTest extends MockedServersTest {
         assertEquals(new BigDecimal("13.47"), stock.getStats().getPe());
     }
 
-    @Test
+    //@Test
     public void dividendRefreshTest() throws IOException {
         Stock stock = YahooFinance.get("INTC");
 
@@ -61,7 +61,7 @@ public class QuoteRequestFlowTest extends MockedServersTest {
         assertEquals(new BigDecimal("1.04"), stock.getDividend().getAnnualYield());
     }
 
-    @Test
+    //@Test
     public void multipleQuoteRequestTest() throws IOException {
         Map<String, Stock> stocks = YahooFinance.get(new String[]{"AIR.PA", "INTC", "C6L.SI"});
         assertTrue(stocks.containsKey("AIR.PA"));

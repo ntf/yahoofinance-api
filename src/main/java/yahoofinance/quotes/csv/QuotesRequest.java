@@ -72,9 +72,9 @@ public abstract class QuotesRequest<T> {
      * @throws java.io.IOException when there's a connection problem or the request is incorrect
      */
     public List<T> getResult() throws IOException {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
 
-        Map<String, String> params = new LinkedHashMap<String, String>();
+        Map<String, String> params = new LinkedHashMap<>();
         params.put("s", this.query);
         params.put("f", this.getFieldsString());
         params.put("e", ".csv");
@@ -90,18 +90,19 @@ public abstract class QuotesRequest<T> {
         redirectableRequest.setReadTimeout(YahooFinance.CONNECTION_TIMEOUT);
         URLConnection connection = redirectableRequest.openConnection();
 
-        InputStreamReader is = new InputStreamReader(connection.getInputStream());
-        BufferedReader br = new BufferedReader(is);
+        try (   InputStreamReader is = new InputStreamReader(connection.getInputStream());
+                BufferedReader br = new BufferedReader(is)) {
 
-        // Parse CSV
-        for (String line = br.readLine(); line != null; line = br.readLine()) {
-            if (line.equals("Missing Symbols List.")) {
-                log.error("The requested symbol was not recognized by Yahoo Finance");
-            } else {
-                log.info("Parsing CSV line: " + Utils.unescape(line));
+            // Parse CSV
+            for (String line = br.readLine(); line != null; line = br.readLine()) {
+                if (line.equals("Missing Symbols List.")) {
+                    log.error("The requested symbol was not recognized by Yahoo Finance");
+                } else {
+                    log.info("Parsing CSV line: " + Utils.unescape(line));
 
-                T data = this.parseCSVLine(line);
-                result.add(data);
+                    T data = this.parseCSVLine(line);
+                    result.add(data);
+                }
             }
         }
 

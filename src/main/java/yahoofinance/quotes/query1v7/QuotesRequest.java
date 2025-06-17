@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import yahoofinance.Utils;
 import yahoofinance.YahooFinance;
+import yahoofinance.query2v8.CrumbManager;
 import yahoofinance.util.RedirectableRequest;
 
 import java.io.IOException;
@@ -55,15 +56,18 @@ public abstract class QuotesRequest<T> {
      * @throws IOException when there's a connection problem or the request is incorrect
      */
     public List<T> getResult() throws IOException {
-        List<T> result = new ArrayList<T>();
+        List<T> result = new ArrayList<>();
 
-        Map<String, String> params = new LinkedHashMap<String, String>();
+        Map<String, String> params = new LinkedHashMap<>();
         params.put("symbols", this.symbols);
 
         String url = YahooFinance.QUOTES_QUERY1V7_BASE_URL + "?" + Utils.getURLParameters(params);
+        if (!CrumbManager.getCrumb().isEmpty()) {
+            url = url + "&crumb=" + CrumbManager.getCrumb();
+        }
 
         // Get JSON from Yahoo
-        log.info("Sending request: " + url);
+        log.info("Sending request: {}", url);
 
         URL request = new URL(url);
         RedirectableRequest redirectableRequest = new RedirectableRequest(request, 5);
@@ -71,15 +75,16 @@ public abstract class QuotesRequest<T> {
         redirectableRequest.setReadTimeout(YahooFinance.CONNECTION_TIMEOUT);
         URLConnection connection = redirectableRequest.openConnection();
 
-        InputStreamReader is = new InputStreamReader(connection.getInputStream());
-        JsonNode node = objectMapper.readTree(is);
-        if(node.has("quoteResponse") && node.get("quoteResponse").has("result")) {
-            node = node.get("quoteResponse").get("result");
-            for(int i = 0; i < node.size(); i++) {
-                result.add(this.parseJson(node.get(i)));
+        try (InputStreamReader is = new InputStreamReader(connection.getInputStream())) {
+            JsonNode node = objectMapper.readTree(is);
+            if (node.has("quoteResponse") && node.get("quoteResponse").has("result")) {
+                node = node.get("quoteResponse").get("result");
+                for (int i = 0; i < node.size(); i++) {
+                    result.add(this.parseJson(node.get(i)));
+                }
+            } else {
+                throw new IOException("Invalid response");
             }
-        } else {
-            throw new IOException("Invalid response");
         }
 
         return result;
